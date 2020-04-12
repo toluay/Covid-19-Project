@@ -4,13 +4,13 @@
 
 function covid19ImpactEstimator($data)
 {
-  $Data = json_decode($data);
+  $Data = json_decode("+\"+$data+\"+);
 
   function currentlyFactor($bale){
     return $Data->reportedCases * $bale;
   } 
 
-    
+    //Question 1 
   $Impact_currentlyInfected = currentlyFactor(10);
 
   $SevereImpact_currentlyInfected = currentlyFactor(50);
@@ -53,10 +53,14 @@ function covid19ImpactEstimator($data)
     }
     
 
-    $Jresult = "{ data :"+ $data + " ,impact: { currentlyInfected:"+ $Impact_currentlyInfected + " ,
-        infectionsByRequestedTime:"+$Impact_infectionsByRequestedTime +"},
-        severeImpact :{currentlyInfected:"+ $SevereImpact_currentlyInfected + ",
+    $Jresult = "{ data :"+ $data + " ,impact: { currentlyInfected:"+ 
+      $Impact_currentlyInfected 
+      + ",infectionsByRequestedTime:"+
+      $Impact_infectionsByRequestedTime
+       +"},severeImpact :{currentlyInfected:"+
+         $SevereImpact_currentlyInfected 
+         + ",
           infectionsByRequestedTime:"+$SevereImpact_infectionsByRequestedTime+ "}
         }";
-    return json_decode($Jresult );
+    return $Jresult ;
 }
