@@ -81,20 +81,8 @@ function covid19ImpactEstimator($Data)
     return $Jresult ;
 }
 
-// $dadawa= [
-// 'region'=> [
-// 'name'=> 'Africa',
-// 'avgAge'=> '19.7',
-// 'avgDailyIncomeInUSD'=> '1',
-// 'avgDailyIncomePopulation'=> '0.65'
-// ],
-// 'periodType'=> 'days',
-// 'timeToElapse'=>'34',
-// 'reportedCases'=> '1698',
-// 'population' =>'9956818',
-// 'totalHospitalBeds'=> '117197'
-// ];
-// echo(json_encode(covid19ImpactEstimator($dadawa)));
+// when data is passed , it will output a json value as output
+ echo(json_encode(covid19ImpactEstimator($data)));
 
 
 
