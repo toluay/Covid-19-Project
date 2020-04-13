@@ -1,20 +1,17 @@
 <?php
 
-// Declare multi-dimensional array
-
-
-function covid19ImpactEstimator($Data)
-{
-    function currentlyFactor( $Data, $bale){
+function covid19ImpactEstimator($Data){
+    
+  function currentlyFactor( $Data, $bale){
     return $Data['reportedCases'] * $bale;
-      }
+    }
 
 
     //Question 1
   $Impact_currentlyInfected = currentlyFactor($Data,10);
 
   $SevereImpact_currentlyInfected = currentlyFactor($Data,50);
-
+     //Question 2 answered .....
   function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
  
      $calFactorial = floor($dayss / 3) ;
@@ -53,7 +50,7 @@ function covid19ImpactEstimator($Data)
         $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($Data["timeToElapse"], $SevereImpact_currentlyInfected));
         break;
     }
- //Question 2 answered .....
+
 
     $Severe_severeCasesByRequestedTime=floor( 0.15 * $SevereImpact_infectionsByRequestedTime);
     $Impact_severeCasesByRequestedTime = floor(0.15 * $Impact_infectionsByRequestedTime);
@@ -78,9 +75,5 @@ function covid19ImpactEstimator($Data)
 
     return $Jresult ;
 }
-
-
-
-
 
 ?>
