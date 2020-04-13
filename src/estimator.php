@@ -3,13 +3,11 @@
 function covid19ImpactEstimator($data){
    
     //Question 1
-  $Impact_currentlyInfected = currentlyFactor($data,10);
+  $Impact_currentlyInfected = $data['reportedCases'] *10;
 
-  $SevereImpact_currentlyInfected = currentlyFactor($data,50);
+  $SevereImpact_currentlyInfected = $data['reportedCases']*50;
 
-  function currentlyFactor( $data, $bale){
-    return $data['reportedCases'] * $bale;
-    }
+ 
 
        //Question 2 answered .....
   function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
