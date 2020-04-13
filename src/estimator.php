@@ -1,13 +1,10 @@
 <?php
 
 
-
-function covid19ImpactEstimator($data)
+function covid19ImpactEstimator($Data)
 {
-  $Data = json_decode("+\"+$data+\"+);
-
-  function currentlyFactor($bale){
-    return $Data->reportedCases * $bale;
+    function currentlyFactor($bale){
+    return $Data['reportedCases'] * $bale;
   } 
 
 
@@ -21,48 +18,48 @@ function covid19ImpactEstimator($data)
     return $InfectedMultiplier * 2^$calFactorial;
     }
 
-    switch ($Data->periodType) {
+    switch ($Data["periodType"]) {
       case 'days':
-        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data->timeToElapse, $Impact_currentlyInfected);
+        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data["timeToElapse"], $Impact_currentlyInfected);
         break;
       case 'weeks':
-        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data->timeToElapse * 7), $Impact_currentlyInfected);      
+        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7), $Impact_currentlyInfected);      
         break;
       case 'months':
-        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data->timeToElapse * 7 * 30), $Impact_currentlyInfected);
+        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7 * 30), $Impact_currentlyInfected);
         break;
       
       default:
-        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data->timeToElapse, $Impact_currentlyInfected);
+        $Impact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data["timeToElapse"], $Impact_currentlyInfected);
         break;
     }
 
     switch ($Data->periodType) {
       case 'days':
-        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data->timeToElapse, $SevereImpact_currentlyInfected);
+        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data["timeToElapse"], $SevereImpact_currentlyInfected);
         break;
       case 'weeks':
-        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data->timeToElapse * 7), $SevereImpact_currentlyInfected);      
+        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7), $SevereImpact_currentlyInfected);      
         break;
       case 'months':
-        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data->timeToElapse * 7 * 30), $SevereImpact_currentlyInfected);
+        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7 * 30), $SevereImpact_currentlyInfected);
         break;
       
       default:
-        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data->timeToElapse, $SevereImpact_currentlyInfected);
+        $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data["timeToElapse"], $SevereImpact_currentlyInfected);
         break;
     }
 
     $Severe_severeCasesByRequestedTime= 0.5 * $SevereImpact_infectionsByRequestedTime;
     $Impact_severeCasesByRequestedTime = 0.15 * $Impact_infectionsByRequestedTime;
-    $Impact_hospitalBedsByRequestedTime = $Data->totalHospitalBeds * 0.35 - $Impact_severeCasesByRequestedTime;
-    $Severe_hospitalBedsByRequestedTime = $Data->totalHospitalBeds * 0.35 -  $Severe_severeCasesByRequestedTime;
+    $Impact_hospitalBedsByRequestedTime = ($Data["totalHospitalBeds"] * 0.35 * 0.95) - $Impact_severeCasesByRequestedTime;
+    $Severe_hospitalBedsByRequestedTime = ($Data["totalHospitalBeds"] * 0.35 * 0.95) -  $Severe_severeCasesByRequestedTime;
     
 
-    $Jresult = "{ data :"+ $data + ",impact: { currentlyInfected:"+ $Impact_currentlyInfected + ",infectionsByRequestedTime:"+
-      $Impact_infectionsByRequestedTime
-       +",severeCasesByRequestedTime:" + $Impact_severeCasesByRequestedTime+",hospitalBedsByRequestedTime:"+$Impact_hospitalBedsByRequestedTime+" },severeImpact :{currentlyInfected:"+$SevereImpact_currentlyInfected + ",
-          infectionsByRequestedTime:"+$SevereImpact_infectionsByRequestedTime +",severeCasesByRequestedTime: "+$Severe_severeCasesByRequestedTime+",hospitalBedsByRequestedTime :"+$Severe_hospitalBedsByRequestedTime+"}
-        }";
-    return $Jresult ;
+    $Jresult =  [ 'data' => $data , 'impact'=> [ 'currentlyInfected' => $Impact_currentlyInfected ,'infectionsByRequestedTime'=>
+      $Impact_infectionsByRequestedTime,'severeCasesByRequestedTime'=> $Impact_severeCasesByRequestedTime,'hospitalBedsByRequestedTime'=>$Impact_hospitalBedsByRequestedTime ],'severeImpact' =>['currentlyInfected'=>$SevereImpact_currentlyInfected ,
+          'infectionsByRequestedTime'=>$SevereImpact_infectionsByRequestedTime ,'severeCasesByRequestedTime'=> $Severe_severeCasesByRequestedTime,'hospitalBedsByRequestedTime' =>$Severe_hospitalBedsByRequestedTime]
+        ]  ;
+    return json_encode($Jresult) ;
 }
+?>
