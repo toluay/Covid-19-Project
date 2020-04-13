@@ -1,5 +1,12 @@
 <?php
 
+function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
+ 
+  $calFactorial = floor($dayss / 3) ;
+ 
+ return $InfectedMultiplier * pow(2,$calFactorial);
+ }
+
 function covid19ImpactEstimator($data){
    
     //Question 1
@@ -10,12 +17,7 @@ function covid19ImpactEstimator($data){
  
 
        //Question 2 answered .....
-  function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
- 
-     $calFactorial = floor($dayss / 3) ;
-    
-    return $InfectedMultiplier * pow(2,$calFactorial);
-    }
+  
 
     switch ($data["periodType"]) {
       case 'days':
