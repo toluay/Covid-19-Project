@@ -16,11 +16,9 @@ function covid19ImpactEstimator($Data)
   $SevereImpact_currentlyInfected = currentlyFactor($Data,50);
 
   function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
-    // echo($dayss);
-    // echo ",,,,,,,,,,,,,,,,,,";
+ 
      $calFactorial = floor($dayss / 3) ;
-    // echo "the factor is";echo($calFactorial);
-    // echo "answer will be :";echo($InfectedMultiplier * (2^$calFactorial));
+    
     return $InfectedMultiplier * pow(2,$calFactorial);
     }
 
@@ -78,11 +76,10 @@ function covid19ImpactEstimator($Data)
       $Impact_infectionsByRequestedTime,'severeCasesByRequestedTime'=> $Impact_severeCasesByRequestedTime,'hospitalBedsByRequestedTime'=>$Impact_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=> $Impact_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Impact_casesForVentilatorsByRequestedTime, 'dollarsInFlight'=>$Impact_dollarsInFlight ],'severeImpact' =>['currentlyInfected'=>$SevereImpact_currentlyInfected ,
           'infectionsByRequestedTime'=>$SevereImpact_infectionsByRequestedTime ,'severeCasesByRequestedTime'=> $Severe_severeCasesByRequestedTime,'hospitalBedsByRequestedTime' =>$Severe_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=>$Severe_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Severe_casesForVentilatorsByRequestedTime,'dollarsInFlight' =>$Severe_dollarsInFlight]];
 
-    return $Jresult ;
+    return json_encode($Jresult) ;
 }
 
-// when data is passed , it will output a json value as output
- echo(json_encode(covid19ImpactEstimator($data)));
+
 
 
 
