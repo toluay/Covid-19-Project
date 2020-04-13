@@ -10,6 +10,7 @@ function covid19ImpactEstimator($data)
     return $Data->reportedCases * $bale;
   } 
 
+
     //Question 1 
   $Impact_currentlyInfected = currentlyFactor(10);
 
@@ -51,16 +52,17 @@ function covid19ImpactEstimator($data)
         $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data->timeToElapse, $SevereImpact_currentlyInfected);
         break;
     }
+
+    $Severe_severeCasesByRequestedTime= 0.5 * $SevereImpact_infectionsByRequestedTime;
+    $Impact_severeCasesByRequestedTime = 0.15 * $Impact_infectionsByRequestedTime;
+    $Impact_hospitalBedsByRequestedTime = $Data->totalHospitalBeds * 0.35 - $Impact_severeCasesByRequestedTime;
+    $Severe_hospitalBedsByRequestedTime = $Data->totalHospitalBeds * 0.35 -  $Severe_severeCasesByRequestedTime;
     
 
-    $Jresult = "{ data :"+ $data + " ,impact: { currentlyInfected:"+ 
-      $Impact_currentlyInfected 
-      + ",infectionsByRequestedTime:"+
+    $Jresult = "{ data :"+ $data + ",impact: { currentlyInfected:"+ $Impact_currentlyInfected + ",infectionsByRequestedTime:"+
       $Impact_infectionsByRequestedTime
-       +"},severeImpact :{currentlyInfected:"+
-         $SevereImpact_currentlyInfected 
-         + ",
-          infectionsByRequestedTime:"+$SevereImpact_infectionsByRequestedTime+ "}
+       +",severeCasesByRequestedTime:" + $Impact_severeCasesByRequestedTime+",hospitalBedsByRequestedTime:"+$Impact_hospitalBedsByRequestedTime+" },severeImpact :{currentlyInfected:"+$SevereImpact_currentlyInfected + ",
+          infectionsByRequestedTime:"+$SevereImpact_infectionsByRequestedTime +",severeCasesByRequestedTime: "+$Severe_severeCasesByRequestedTime+",hospitalBedsByRequestedTime :"+$Severe_hospitalBedsByRequestedTime+"}
         }";
     return $Jresult ;
 }
