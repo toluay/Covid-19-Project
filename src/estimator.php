@@ -78,7 +78,7 @@ function covid19ImpactEstimator($Data)
       $Impact_infectionsByRequestedTime,'severeCasesByRequestedTime'=> $Impact_severeCasesByRequestedTime,'hospitalBedsByRequestedTime'=>$Impact_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=> $Impact_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Impact_casesForVentilatorsByRequestedTime, 'dollarsInFlight'=>$Impact_dollarsInFlight ],'severeImpact' =>['currentlyInfected'=>$SevereImpact_currentlyInfected ,
           'infectionsByRequestedTime'=>$SevereImpact_infectionsByRequestedTime ,'severeCasesByRequestedTime'=> $Severe_severeCasesByRequestedTime,'hospitalBedsByRequestedTime' =>$Severe_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=>$Severe_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Severe_casesForVentilatorsByRequestedTime,'dollarsInFlight' =>$Severe_dollarsInFlight]];
 
-    return json_encode($Jresult) ;
+    return $Jresult ;
 }
 
 $dadawa= [
@@ -94,7 +94,7 @@ $dadawa= [
 'population' =>'9956818',
 'totalHospitalBeds'=> '117197'
 ];
-echo(covid19ImpactEstimator($dadawa));
+echo(json_encode(covid19ImpactEstimator($dadawa)));
 
 
 
