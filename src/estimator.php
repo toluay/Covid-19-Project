@@ -49,17 +49,26 @@ function covid19ImpactEstimator($Data)
         $SevereImpact_infectionsByRequestedTime =infectionsByRequestedTimeFactor($Data["timeToElapse"], $SevereImpact_currentlyInfected);
         break;
     }
+ //Question 2 answered .....
 
-    $Severe_severeCasesByRequestedTime= 0.5 * $SevereImpact_infectionsByRequestedTime;
+    $Severe_severeCasesByRequestedTime= 0.15 * $SevereImpact_infectionsByRequestedTime;
     $Impact_severeCasesByRequestedTime = 0.15 * $Impact_infectionsByRequestedTime;
     $Impact_hospitalBedsByRequestedTime = ($Data["totalHospitalBeds"] * 0.35 * 0.95) - $Impact_severeCasesByRequestedTime;
     $Severe_hospitalBedsByRequestedTime = ($Data["totalHospitalBeds"] * 0.35 * 0.95) -  $Severe_severeCasesByRequestedTime;
     
+    //Question 3 
 
+    $Impact_casesForICUByRequestedTime = $Impact_infectionsByRequestedTime *0.05;
+    $Severe_casesForICUByRequestedTime = $SevereImpact_infectionsByRequestedTime * 0.05;
+
+    $Severe_casesForVentilatorsByRequestedTime = $Impact_infectionsByRequestedTime *0.02;
+    $Impact_casesForVentilatorsByRequestedTime =$SevereImpact_infectionsByRequestedTime * 0.02;
+    
+    
     $Jresult =  [ 'data' => $data , 'impact'=> [ 'currentlyInfected' => $Impact_currentlyInfected ,'infectionsByRequestedTime'=>
-      $Impact_infectionsByRequestedTime,'severeCasesByRequestedTime'=> $Impact_severeCasesByRequestedTime,'hospitalBedsByRequestedTime'=>$Impact_hospitalBedsByRequestedTime ],'severeImpact' =>['currentlyInfected'=>$SevereImpact_currentlyInfected ,
-          'infectionsByRequestedTime'=>$SevereImpact_infectionsByRequestedTime ,'severeCasesByRequestedTime'=> $Severe_severeCasesByRequestedTime,'hospitalBedsByRequestedTime' =>$Severe_hospitalBedsByRequestedTime]
-        ]  ;
+      $Impact_infectionsByRequestedTime,'severeCasesByRequestedTime'=> $Impact_severeCasesByRequestedTime,'hospitalBedsByRequestedTime'=>$Impact_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=> $Impact_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Impact_casesForVentilatorsByRequestedTime ],'severeImpact' =>['currentlyInfected'=>$SevereImpact_currentlyInfected ,
+          'infectionsByRequestedTime'=>$SevereImpact_infectionsByRequestedTime ,'severeCasesByRequestedTime'=> $Severe_severeCasesByRequestedTime,'hospitalBedsByRequestedTime' =>$Severe_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=>$Severe_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Severe_casesForVentilatorsByRequestedTime]];
+
     return json_encode($Jresult) ;
 }
 ?>
