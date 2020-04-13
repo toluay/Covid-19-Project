@@ -3,7 +3,7 @@
 function covid19ImpactEstimator($data){
     
   function currentlyFactor( $data, $bale){
-    return $Data['reportedCases'] * $bale;
+    return $data['reportedCases'] * $bale;
     }
 
     //Question 1
