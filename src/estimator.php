@@ -1,16 +1,15 @@
 <?php
 
-function covid19ImpactEstimator($Data){
+function covid19ImpactEstimator($data){
     
-  function currentlyFactor( $Data, $bale){
+  function currentlyFactor( $data, $bale){
     return $Data['reportedCases'] * $bale;
     }
 
-
     //Question 1
-  $Impact_currentlyInfected = currentlyFactor($Data,10);
+  $Impact_currentlyInfected = currentlyFactor($data,10);
 
-  $SevereImpact_currentlyInfected = currentlyFactor($Data,50);
+  $SevereImpact_currentlyInfected = currentlyFactor($data,50);
      //Question 2 answered .....
   function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
  
@@ -19,45 +18,44 @@ function covid19ImpactEstimator($Data){
     return $InfectedMultiplier * pow(2,$calFactorial);
     }
 
-    switch ($Data["periodType"]) {
+    switch ($data["periodType"]) {
       case 'days':
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($Data["timeToElapse"], $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $Impact_currentlyInfected));
         break;
       case 'weeks':
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7), $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7), $Impact_currentlyInfected));
         break;
       case 'months':
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7 * 30), $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7 * 30), $Impact_currentlyInfected));
         break;
 
       default:
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($Data["timeToElapse"], $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $Impact_currentlyInfected));
         break;
     }
 
-    switch ($Data["periodType"]) {
+    switch ($data["periodType"]) {
       case 'days':
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($Data["timeToElapse"], $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $SevereImpact_currentlyInfected));
         break;
       case 'weeks':
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7), $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7), $SevereImpact_currentlyInfected));
         break;
       case 'months':
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($Data["timeToElapse"] * 7 * 30), $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7 * 30), $SevereImpact_currentlyInfected));
         break;
 
       default:
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($Data["timeToElapse"], $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $SevereImpact_currentlyInfected));
         break;
     }
 
 
     $Severe_severeCasesByRequestedTime=floor( 0.15 * $SevereImpact_infectionsByRequestedTime);
     $Impact_severeCasesByRequestedTime = floor(0.15 * $Impact_infectionsByRequestedTime);
-    $Impact_hospitalBedsByRequestedTime = floor($Data["totalHospitalBeds"] * 0.35 ) +1- $Impact_severeCasesByRequestedTime;
-    $Severe_hospitalBedsByRequestedTime = floor($Data["totalHospitalBeds"] * 0.35 )+1 - $Severe_severeCasesByRequestedTime;
-
-    //Question 3
+    $Impact_hospitalBedsByRequestedTime = floor($data["totalHospitalBeds"] * 0.35 ) +1- $Impact_severeCasesByRequestedTime;
+    $Severe_hospitalBedsByRequestedTime = floor($data["totalHospitalBeds"] * 0.35 )+1 - $Severe_severeCasesByRequestedTime;
+        //Question 3
 
     $Impact_casesForICUByRequestedTime = floor($Impact_infectionsByRequestedTime *0.05);
     $Severe_casesForICUByRequestedTime = floor($SevereImpact_infectionsByRequestedTime * 0.05);
@@ -65,15 +63,14 @@ function covid19ImpactEstimator($Data){
     $Severe_casesForVentilatorsByRequestedTime = floor($SevereImpact_infectionsByRequestedTime *0.02);
     $Impact_casesForVentilatorsByRequestedTime =floor($Impact_infectionsByRequestedTime * 0.02);
 
-    $Impact_dollarsInFlight = floor(($Impact_infectionsByRequestedTime* $Data["region"]["avgDailyIncomeInUSD"]* $Data["region"]["avgDailyIncomePopulation"])/30);
-    $Severe_dollarsInFlight = floor(($SevereImpact_infectionsByRequestedTime * $Data["region"]["avgDailyIncomeInUSD"]* $Data["region"]["avgDailyIncomePopulation"])/30);
+    $Impact_dollarsInFlight = floor(($Impact_infectionsByRequestedTime* $data["region"]["avgDailyIncomeInUSD"]* $data["region"]["avgDailyIncomePopulation"])/30);
+    $Severe_dollarsInFlight = floor(($SevereImpact_infectionsByRequestedTime * $data["region"]["avgDailyIncomeInUSD"]* $data["region"]["avgDailyIncomePopulation"])/30);
 
 
-    $Jresult =  [ 'data' => $Data , 'impact'=> [ 'currentlyInfected' => $Impact_currentlyInfected ,'infectionsByRequestedTime'=>
+    $Jresult =  [ 'data' => $data , 'impact'=> [ 'currentlyInfected' => $Impact_currentlyInfected ,'infectionsByRequestedTime'=>
       $Impact_infectionsByRequestedTime,'severeCasesByRequestedTime'=> $Impact_severeCasesByRequestedTime,'hospitalBedsByRequestedTime'=>$Impact_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=> $Impact_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Impact_casesForVentilatorsByRequestedTime, 'dollarsInFlight'=>$Impact_dollarsInFlight ],'severeImpact' =>['currentlyInfected'=>$SevereImpact_currentlyInfected ,
           'infectionsByRequestedTime'=>$SevereImpact_infectionsByRequestedTime ,'severeCasesByRequestedTime'=> $Severe_severeCasesByRequestedTime,'hospitalBedsByRequestedTime' =>$Severe_hospitalBedsByRequestedTime,'casesForICUByRequestedTime'=>$Severe_casesForICUByRequestedTime,'casesForVentilatorsByRequestedTime'=>$Severe_casesForVentilatorsByRequestedTime,'dollarsInFlight' =>$Severe_dollarsInFlight]];
 
     return $Jresult ;
 }
 
-?>
