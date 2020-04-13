@@ -1,16 +1,17 @@
 <?php
 
 function covid19ImpactEstimator($data){
-    
-  function currentlyFactor( $data, $bale){
-    return $data['reportedCases'] * $bale;
-    }
-
+   
     //Question 1
   $Impact_currentlyInfected = currentlyFactor($data,10);
 
   $SevereImpact_currentlyInfected = currentlyFactor($data,50);
-     //Question 2 answered .....
+
+  function currentlyFactor( $data, $bale){
+    return $data['reportedCases'] * $bale;
+    }
+
+       //Question 2 answered .....
   function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
  
      $calFactorial = floor($dayss / 3) ;
