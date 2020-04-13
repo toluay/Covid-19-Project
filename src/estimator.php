@@ -1,8 +1,8 @@
 <?php
 
-function infectionsByRequestedTimeFactor ($dayss , $InfectedMultiplier ){
+function infectionsByRequestedTimeFactor ( $dayss ,$InfectedMultiplier ){
  
-  $calFactorial = floor($dayss / 3) ;
+  $calFactorial = $dayss % 3;
  
  return $InfectedMultiplier * pow(2,$calFactorial);
  }
@@ -21,33 +21,33 @@ function covid19ImpactEstimator($data){
 
     switch ($data["periodType"]) {
       case 'days':
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime = infectionsByRequestedTimeFactor($data["timeToElapse"], $Impact_currentlyInfected);
         break;
       case 'weeks':
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7), $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime = infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7), $Impact_currentlyInfected);
         break;
       case 'months':
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7 * 30), $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime = infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7 * 30), $Impact_currentlyInfected);
         break;
 
       default:
-        $Impact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $Impact_currentlyInfected));
+        $Impact_infectionsByRequestedTime = infectionsByRequestedTimeFactor($data["timeToElapse"], $Impact_currentlyInfected);
         break;
     }
 
     switch ($data["periodType"]) {
       case 'days':
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime = infectionsByRequestedTimeFactor($data["timeToElapse"], $SevereImpact_currentlyInfected);
         break;
       case 'weeks':
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7), $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime = infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7), $SevereImpact_currentlyInfected);
         break;
       case 'months':
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7 * 30), $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime = infectionsByRequestedTimeFactor(($data["timeToElapse"] * 7 * 30), $SevereImpact_currentlyInfected);
         break;
 
       default:
-        $SevereImpact_infectionsByRequestedTime =floor(infectionsByRequestedTimeFactor($data["timeToElapse"], $SevereImpact_currentlyInfected));
+        $SevereImpact_infectionsByRequestedTime = infectionsByRequestedTimeFactor($data["timeToElapse"], $SevereImpact_currentlyInfected);
         break;
     }
 
